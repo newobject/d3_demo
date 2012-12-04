@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <style>
+      body {
+        font: 10px sans-serif;
+      }
+
+      .link {
+        fill: none;
+        stroke: #000;
+      }
+
+      .node {
+        stroke: #000;
+      }
+
+      .border {
+        fill: none;
+        stroke: #000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>
+      <a href="http://bl.ocks.org/1197731">http://bl.ocks.org/1197731</a>
+    </h1>
+
+    <script src="/assets/javascripts/d3.v2.js"></script>
+    <script>
+      var svg = d3.select("body").append("svg")
+          .attr("width", 400)
+          .attr("height", 300);
+
+      svg.append("circle")
+          .attr("id", "blueCircle")
+          .attr("cx", 50)
+          .attr("cy", 140)
+          .attr("r", 40)
+          .attr("fill", "blue")
+          .call(d3.behavior.drag().on("drag", move));
+
+      svg.append("circle")
+          .attr("id", "redCircle")
+          .attr("cx", 100)
+          .attr("cy", 140)
+          .attr("r", 40)
+          .attr("fill", "red")
+          .call(d3.behavior.drag().on("drag", move));
+
+      function move(){
+        this.parentNode.appendChild(this);
+        var dragTarget = d3.select(this);
+        dragTarget
+          .attr("cx", function(){ return d3.event.dx + parseInt(dragTarget.attr("cx")); })
+          .attr("cy", function(){ return d3.event.dy + parseInt(dragTarget.attr("cy")); });
+      }
+    </script>
+  </body>
+</html>
