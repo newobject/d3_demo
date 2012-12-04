@@ -26,7 +26,7 @@
 
   <body>
     <h1>Source: <a href="http://bl.ocks.org/3184089">http://bl.ocks.org/3184089</a></h1>
-    
+
     <script src="/assets/javascripts/d3.v2.js"></script>
     <script>
       var margin = {top: 140, right: 10, bottom: 140, left: 10},
@@ -64,16 +64,9 @@
         .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      svg.append("rect")
-          .attr("width", width)
-          .attr("height", height)
-          .attr("class", "border");
+      drawBorders();
 
-      svg.append("text")
-          .attr("x", 6)
-          .attr("y", 6)
-          .attr("dy", ".71em")
-          .text(function(d) { return d.key; });
+      drawTexts();
 
       var root = {
         "children": [{
@@ -91,13 +84,36 @@
             links = tree.links(nodes);
 
         // Create the link lines
+        drawLinks(svg, links, o);
+
+        // Create the node circles
+        drawNodes(svg, nodes, o);
+      });
+
+      function drawBorders(){
+        svg.append("rect")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("class", "border");
+      }
+
+      function drawTexts(){
+        svg.append("text")
+          .attr("x", 6)
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .text(function(d) { return d.key; });
+      }
+
+      function drawLinks(svg, links, o){
         svg.selectAll(".link")
             .data(links)
           .enter().append("path")
             .attr("class", "link")
             .attr("d", d3.svg.diagonal().projection(function(d) { return [o.x(d), o.y(d)]; }));
+      }
 
-        // Create the node circles
+      function drawNodes(svg, nodes, o){
         svg.selectAll(".node")
             .data(nodes)
           .enter().append("circle")
@@ -105,7 +121,7 @@
             .attr("r", 4.5)
             .attr("cx", o.x)
             .attr("cy", o.y);
-      });
+      }
     </script>
   </body>
 </html>
